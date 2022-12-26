@@ -1,9 +1,12 @@
-import { Typography } from '@mui/material';
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
+import { Link } from 'react-router-dom';
+import {
+  Typography,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
+} from '@mui/material';
 import { truncateString } from '../lib/general';
 
 const Pet = ({ pet }: { pet: Pet }) => {
@@ -29,7 +32,9 @@ const Pet = ({ pet }: { pet: Pet }) => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size='small'>View</Button>
+        <Link to={`/pets/${pet.id}`}>
+          <Button size='small'>View</Button>
+        </Link>
         <Button size='small'>Buy</Button>
       </CardActions>
     </Card>
