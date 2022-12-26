@@ -1,11 +1,12 @@
 /* eslint-disable react/no-array-index-key */
-import { Container, Typography, Stack } from '@mui/material';
+import { Container, Stack } from '@mui/material';
 import { useState, useEffect } from 'react';
 
 import { getPet } from './lib/pet';
 import useBreedList from './lib/hooks';
 import Pet from './components/Pet';
 import PetForm from './components/PetForm';
+import Navbar from './components/Navbar';
 
 const animals = ['cat', 'dog', 'bird', 'rabbit', 'reptile'];
 
@@ -15,6 +16,7 @@ function App() {
   const [breed, setBreed] = useState('');
   const [pets, setPets] = useState([]);
   const [breeds] = useBreedList(animal);
+  const [isOpen, setIsOpen] = useState(false);
 
   const fetchPets = async () => {
     const data = await getPet(animal, location, breed);
@@ -25,6 +27,11 @@ function App() {
     fetchPets();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleSubmit = () => {
+    fetchPets();
+    setIsOpen(false);
+  };
 
   const handleAnimalChange = (e: any) => {
     setAnimal(e.target.value);
@@ -39,27 +46,30 @@ function App() {
     setLocation(e.target.value);
   };
 
+  const handleClickOpen = () => {
+    setIsOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
+  };
+
   return (
     <Container>
-      <Typography
-        variant='h1'
-        fontSize='2em'
-        fontWeight='bold'
-        textAlign='center'
-        my='2rem'
-      >
-        Pet Store
-      </Typography>
+      <Navbar handleOpen={handleClickOpen} />
       <PetForm
         animals={animals}
         breeds={breeds}
         animal={animal}
         location={location}
         breed={breed}
+        isOpen={isOpen}
         handleAnimalChange={handleAnimalChange}
         handleLocationChange={handleLocationChange}
         handleBreedChange={handleBreedChange}
-        handleSubmit={fetchPets}
+        handleSubmit={handleSubmit}
+        handleOpen={handleClickOpen}
+        handleClose={handleClose}
       />
       <Stack
         component='div'
@@ -67,7 +77,8 @@ function App() {
         alignItems='center'
         gap={{ md: '2rem' }}
         flexWrap='wrap'
-        my='4rem'
+        mt='8rem'
+        mb='4rem'
       >
         {pets ? (
           pets.map((pet: Pet) => <Pet key={pet.id} pet={pet} />)
