@@ -1,72 +1,64 @@
 /* eslint-disable react/no-array-index-key */
 import { Container, Stack } from '@mui/material';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 
-import { getPet } from '../lib/pet';
-import useBreedList from '../lib/hooks';
+import { searchPets } from '../lib/pet';
 import Pet from '../components/Pet';
 import PetForm from '../components/PetForm';
-import Navbar from '../components/Navbar';
+import useBreedList from '../lib/hooks';
+import Loader from '../components/Loader';
+import Error from '../components/Error';
 
 const animals = ['cat', 'dog', 'bird', 'rabbit', 'reptile'];
 
-function Home() {
-  const [location, setLocation] = useState('');
+function Home({ isOpen, handleClose, handleClickOpen }: any) {
+  const [requestParams, setRequestParams] = useState<{
+    animal: FormDataEntryValue;
+    location: FormDataEntryValue;
+    breed: FormDataEntryValue;
+  }>({
+    animal: '',
+    location: '',
+    breed: '',
+  });
   const [animal, setAnimal] = useState('');
-  const [breed, setBreed] = useState('');
-  const [pets, setPets] = useState([]);
   const [breeds] = useBreedList(animal);
-  const [isOpen, setIsOpen] = useState(false);
 
-  const fetchPets = async () => {
-    const data = await getPet(animal, location, breed);
-    setPets(data);
-  };
+  const {
+    data: pets,
+    isError,
+    isLoading,
+  } = useQuery(['search', requestParams], searchPets);
 
-  useEffect(() => {
-    fetchPets();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
 
-  const handleSubmit = () => {
-    fetchPets();
-    setIsOpen(false);
+    const formData = new FormData(e.target);
+    const data = {
+      animal: formData.get('animal') ?? '',
+      location: formData.get('location') ?? '',
+      breed: formData.get('breed') ?? '',
+    };
+    setRequestParams(data);
+    handleClose();
   };
 
   const handleAnimalChange = (e: any) => {
     setAnimal(e.target.value);
-    setBreed('');
   };
 
-  const handleBreedChange = (e: any) => {
-    setBreed(e.target.value);
-  };
-
-  const handleLocationChange = (e: any) => {
-    setLocation(e.target.value);
-  };
-
-  const handleClickOpen = () => {
-    setIsOpen(true);
-  };
-
-  const handleClose = () => {
-    setIsOpen(false);
-  };
+  if (isLoading) return <Loader />;
+  if (isError) return <Error />;
 
   return (
     <Container>
-      <Navbar handleOpen={handleClickOpen} />
       <PetForm
         animals={animals}
         breeds={breeds}
         animal={animal}
-        location={location}
-        breed={breed}
         isOpen={isOpen}
         handleAnimalChange={handleAnimalChange}
-        handleLocationChange={handleLocationChange}
-        handleBreedChange={handleBreedChange}
         handleSubmit={handleSubmit}
         handleOpen={handleClickOpen}
         handleClose={handleClose}
@@ -74,11 +66,10 @@ function Home() {
       <Stack
         component='div'
         direction={{ md: 'row' }}
-        alignItems='center'
+        justifyContent='space-between'
         gap={{ md: '2rem' }}
         flexWrap='wrap'
-        mt='8rem'
-        mb='4rem'
+        my='4rem'
       >
         {pets ? (
           pets.map((pet: Pet) => <Pet key={pet.id} pet={pet} />)
