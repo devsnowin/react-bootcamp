@@ -18,6 +18,7 @@ const Carousel = ({ images }: { images: string[] }) => {
         sx={{
           width: 280,
           height: 280,
+          borderRadius: '10px',
         }}
       />
       <Stack
@@ -28,7 +29,7 @@ const Carousel = ({ images }: { images: string[] }) => {
         padding='0'
       >
         {images.map((image, i) => (
-          <Button key={i} padding={0} onClick={() => handlePhotoChange(i)}>
+          <Button key={i} onClick={() => handlePhotoChange(i)}>
             <img
               src={image}
               alt='pet thumbnail'
