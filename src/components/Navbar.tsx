@@ -1,9 +1,8 @@
 import { Link, NavLink } from 'react-router-dom';
-import { IconButton, Typography, Stack } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
+import { Typography, Stack, Box } from '@mui/material';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-const Navbar = ({ handleOpen }: { handleOpen: any }) => {
+const Navbar = () => {
   return (
     <Stack
       direction='row'
@@ -29,11 +28,14 @@ const Navbar = ({ handleOpen }: { handleOpen: any }) => {
           Pet Store
         </Typography>
       </NavLink>
-      <Link to='/'>
-        <IconButton onClick={handleOpen} color='inherit'>
-          <SearchIcon fontSize='medium' />
-        </IconButton>
-      </Link>
+      <Box display='flex' gap='2rem'>
+        <Link to='/'>
+          <Typography>Home</Typography>
+        </Link>
+        <Link to='/about'>
+          <Typography>About</Typography>
+        </Link>
+      </Box>
     </Stack>
   );
 };
