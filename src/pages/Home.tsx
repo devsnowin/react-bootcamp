@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 import { searchPets } from '../lib/pet';
-import Pet from '../components/Pet';
+import PetCard from '../components/PetCard';
 import PetForm from '../components/PetForm';
 import useBreedList from '../lib/hooks';
 import Loader from '../components/Loader';
@@ -12,7 +12,7 @@ import Error from '../components/Error';
 
 const animals = ['cat', 'dog', 'bird', 'rabbit', 'reptile'];
 
-function Home({ isOpen, handleClose, handleClickOpen }: any) {
+function Home() {
   const [requestParams, setRequestParams] = useState<{
     animal: FormDataEntryValue;
     location: FormDataEntryValue;
@@ -41,7 +41,6 @@ function Home({ isOpen, handleClose, handleClickOpen }: any) {
       breed: formData.get('breed') ?? '',
     };
     setRequestParams(data);
-    handleClose();
   };
 
   const handleAnimalChange = (e: any) => {
@@ -57,11 +56,8 @@ function Home({ isOpen, handleClose, handleClickOpen }: any) {
         animals={animals}
         breeds={breeds}
         animal={animal}
-        isOpen={isOpen}
         handleAnimalChange={handleAnimalChange}
         handleSubmit={handleSubmit}
-        handleOpen={handleClickOpen}
-        handleClose={handleClose}
       />
       <Stack
         component='div'
@@ -72,7 +68,7 @@ function Home({ isOpen, handleClose, handleClickOpen }: any) {
         my='4rem'
       >
         {pets ? (
-          pets.map((pet: Pet) => <Pet key={pet.id} pet={pet} />)
+          pets.map((pet: Pet) => <PetCard key={pet.id} pet={pet} />)
         ) : (
           <p>no data</p>
         )}

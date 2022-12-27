@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { truncateString } from '../lib/general';
 
-const Pet = ({ pet }: { pet: Pet }) => {
+const PetCard = ({ pet }: { pet: Pet }) => {
   return (
     <Card sx={{ maxWidth: 345, width: '100%' }}>
       <CardMedia
@@ -41,4 +41,4 @@ const Pet = ({ pet }: { pet: Pet }) => {
   );
 };
 
-export default Pet;
+export default PetCard;
