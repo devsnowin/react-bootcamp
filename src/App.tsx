@@ -1,12 +1,17 @@
+import { lazy, Suspense } from 'react';
+import { Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Route, Routes } from 'react-router';
-import { BrowserRouter } from 'react-router-dom';
-import { Container } from '@mui/system';
+import { Container } from '@mui/material';
+
 import Home from './pages/Home';
-import PetDetail from './pages/PetDetail';
 import Navbar from './components/Navbar';
-import About from './pages/About';
-import ErrorPage from './pages/404';
+import Loader from './components/Loader';
+
+import './global.css';
+
+const PetDetail = lazy(() => import('./pages/PetDetail'));
+const About = lazy(() => import('./pages/About'));
+const ErrorPage = lazy(() => import('./pages/404'));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,8 +24,8 @@ const queryClient = new QueryClient({
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
+      <Suspense fallback={<Loader />}>
         <Container>
           <Navbar />
           <Routes>
@@ -30,8 +35,8 @@ const App = () => {
             <Route path='/*' element={<ErrorPage />} />
           </Routes>
         </Container>
-      </QueryClientProvider>
-    </BrowserRouter>
+      </Suspense>
+    </QueryClientProvider>
   );
 };
 

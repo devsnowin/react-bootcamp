@@ -1,5 +1,6 @@
 import { Link, NavLink } from 'react-router-dom';
 import { Typography, Stack, Box } from '@mui/material';
+import CatImage from '../assets/cat.png';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 const Navbar = () => {
@@ -24,7 +25,7 @@ const Navbar = () => {
             gap: '0.6rem',
           }}
         >
-          <img src='./cat.png' alt='logo' width={48} height={48} />
+          <img src={CatImage} alt='logo' width={48} height={48} />
           Pet Store
         </Typography>
       </NavLink>

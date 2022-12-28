@@ -5,11 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build:client": "tsc && vite build --outDir ./dist/client --emptyOutDir",
+    "build:server": "tsc && vite build --outDir ./dist/server --ssr ./src/ServerApp.tsx --emptyOutDir",
+    "build": "npm run bulid:client && npm run build:server",
     "preview": "vite preview",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --quiet",
-    "lint-fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix"
+    "lint-fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix",
+    "start": "node --experimental-specifier-resolution=node server.js"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
@@ -19,11 +22,13 @@
     "@mui/material": "^5.11.1",
     "@tanstack/react-query": "^4.20.4",
     "@tanstack/react-query-devtools": "^4.20.4",
+    "express": "^4.18.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.6.1"
   },
   "devDependencies": {
+    "@types/express": "^4.17.15",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.9",
     "@typescript-eslint/eslint-plugin": "^5.47.0",
@@ -39,6 +44,7 @@
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "prettier": "^2.8.1",
+    "ts-node": "^10.9.1",
     "typescript": "^4.9.3",
     "vite": "^4.0.0"
   }
