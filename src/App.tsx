@@ -9,7 +9,7 @@ import PetDetail from './pages/PetDetail';
 import Navbar from './components/Navbar';
 import About from './pages/About';
 import ErrorPage from './pages/404';
-import store from './store';
+import store from './app/store';
 
 const queryClient = new QueryClient({
   defaultOptions: {

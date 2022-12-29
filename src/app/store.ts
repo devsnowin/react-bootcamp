@@ -1,12 +1,16 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import adoptedPet from './features/petSlice';
-import searchParams from './features/searchSlice';
+import adoptedPet from '../features/petSlice';
+import searchParams from '../features/searchSlice';
+import { petApi } from '../features/pet';
 
 const store = configureStore({
   reducer: {
     adoptedPet,
     searchParams,
+    [petApi.reducerPath]: petApi.reducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(petApi.middleware),
 });
 
 export type AppDispatch = typeof store.dispatch;
