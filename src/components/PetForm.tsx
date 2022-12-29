@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import Button from '@mui/material/Button';
 
-import { RootState } from '../store';
+import { RootState } from '../app/store';
 
 const PetForm = ({
   animals,

@@ -1,17 +1,16 @@
 /* eslint-disable react/no-array-index-key */
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useQuery } from '@tanstack/react-query';
 import { Container, Stack } from '@mui/material';
 
-import { searchPets } from '../lib/pet';
 import PetCard from '../components/PetCard';
 import PetForm from '../components/PetForm';
 import useBreedList from '../lib/hooks';
 import Loader from '../components/Loader';
 import Error from '../components/Error';
-import { RootState } from '../store';
+import { RootState } from '../app/store';
 import { all } from '../features/searchSlice';
+import { useSearchQuery } from '../features/pet';
 
 const animals = ['cat', 'dog', 'bird', 'rabbit', 'reptile'];
 
@@ -23,10 +22,7 @@ function Home() {
     (state: RootState) => state.searchParams.value
   );
 
-  const { data, isError, isLoading } = useQuery<Pet[]>(
-    ['search', searchParams],
-    searchPets
-  );
+  const { data, isError, isLoading } = useSearchQuery(searchParams);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
