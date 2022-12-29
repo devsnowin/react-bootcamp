@@ -8,11 +8,15 @@ import { fetchPet } from '../lib/pet';
 
 const PetDetail = () => {
   const { id } = useParams();
-  const { data, isLoading, isError } = useQuery(['details', id], fetchPet);
+  const { data, isLoading, isError } = useQuery<Pet[]>(
+    ['details', id],
+    fetchPet
+  );
 
   if (isError) return <Error />;
   if (isLoading) return <Loader />;
   const pet = data[0];
+
   return (
     <Container>
       <Stack

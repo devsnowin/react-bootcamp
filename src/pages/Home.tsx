@@ -22,25 +22,23 @@ function Home() {
     location: '',
     breed: '',
   });
-  const [animal, setAnimal] = useState('');
+  const [animal, setAnimal] = useState<Animal | null>(null);
   const [breeds] = useBreedList(animal);
 
-  const {
-    data: pets,
-    isError,
-    isLoading,
-  } = useQuery(['search', requestParams], searchPets);
+  const { data, isError, isLoading } = useQuery<Pet[]>(
+    ['search', requestParams],
+    searchPets
+  );
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-
     const formData = new FormData(e.target);
-    const data = {
+    const obj = {
       animal: formData.get('animal') ?? '',
-      location: formData.get('location') ?? '',
       breed: formData.get('breed') ?? '',
+      location: formData.get('location') ?? '',
     };
-    setRequestParams(data);
+    setRequestParams(obj);
   };
 
   const handleAnimalChange = (e: any) => {
@@ -49,6 +47,7 @@ function Home() {
 
   if (isLoading) return <Loader />;
   if (isError) return <Error />;
+  const pets = data;
 
   return (
     <Container>
