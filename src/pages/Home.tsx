@@ -1,7 +1,8 @@
 /* eslint-disable react/no-array-index-key */
-import { Container, Stack } from '@mui/material';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useQuery } from '@tanstack/react-query';
+import { Container, Stack } from '@mui/material';
 
 import { searchPets } from '../lib/pet';
 import PetCard from '../components/PetCard';
@@ -9,24 +10,21 @@ import PetForm from '../components/PetForm';
 import useBreedList from '../lib/hooks';
 import Loader from '../components/Loader';
 import Error from '../components/Error';
+import { RootState } from '../store';
+import { all } from '../features/searchSlice';
 
 const animals = ['cat', 'dog', 'bird', 'rabbit', 'reptile'];
 
 function Home() {
-  const [requestParams, setRequestParams] = useState<{
-    animal: FormDataEntryValue;
-    location: FormDataEntryValue;
-    breed: FormDataEntryValue;
-  }>({
-    animal: '',
-    location: '',
-    breed: '',
-  });
   const [animal, setAnimal] = useState<Animal | null>(null);
   const [breeds] = useBreedList(animal);
+  const dispatch = useDispatch();
+  const searchParams = useSelector(
+    (state: RootState) => state.searchParams.value
+  );
 
   const { data, isError, isLoading } = useQuery<Pet[]>(
-    ['search', requestParams],
+    ['search', searchParams],
     searchPets
   );
 
@@ -38,7 +36,7 @@ function Home() {
       breed: formData.get('breed') ?? '',
       location: formData.get('location') ?? '',
     };
-    setRequestParams(obj);
+    dispatch(all(obj));
   };
 
   const handleAnimalChange = (e: any) => {
@@ -61,7 +59,7 @@ function Home() {
       <Stack
         component='div'
         direction={{ md: 'row' }}
-        justifyContent='space-between'
+        justifyContent='center'
         gap={{ md: '2rem' }}
         flexWrap='wrap'
         my='4rem'

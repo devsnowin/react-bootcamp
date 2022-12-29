@@ -1,5 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable @typescript-eslint/no-shadow */
+import { useSelector } from 'react-redux';
 import {
   Stack,
   FormGroup,
@@ -7,8 +8,11 @@ import {
   FormLabel,
   Select,
   MenuItem,
+  Avatar,
 } from '@mui/material';
 import Button from '@mui/material/Button';
+
+import { RootState } from '../store';
 
 const PetForm = ({
   animals,
@@ -17,6 +21,8 @@ const PetForm = ({
   handleAnimalChange,
   handleSubmit,
 }: any) => {
+  const adoptedPet = useSelector((state: RootState) => state.adoptedPet.value);
+
   return (
     <Stack width='100%' maxWidth='32rem' mx='auto'>
       <form
@@ -28,6 +34,15 @@ const PetForm = ({
           marginBlock: '4rem',
         }}
       >
+        {adoptedPet ? (
+          <FormGroup sx={{ marginInline: 'auto' }}>
+            <Avatar
+              src={adoptedPet.images[0]}
+              alt={adoptedPet.name}
+              sx={{ width: 120, height: 120 }}
+            />
+          </FormGroup>
+        ) : null}
         <FormGroup>
           <TextField
             name='location'
