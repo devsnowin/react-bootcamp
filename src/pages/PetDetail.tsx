@@ -1,10 +1,13 @@
 import { Container, Stack, Typography, Box, Button } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+
+import { adopt } from '../features/petSlice';
+import { fetchPet } from '../lib/pet';
 import Carousel from '../components/Carousel';
 import Error from '../components/Error';
 import Loader from '../components/Loader';
-import { fetchPet } from '../lib/pet';
 
 const PetDetail = () => {
   const { id } = useParams();
@@ -12,6 +15,8 @@ const PetDetail = () => {
     ['details', id],
     fetchPet
   );
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   if (isError) return <Error />;
   if (isLoading) return <Loader />;
@@ -37,7 +42,14 @@ const PetDetail = () => {
             {pet.description}
           </Typography>
         </Box>
-        <Button>Adpot Me</Button>
+        <Button
+          onClick={() => {
+            dispatch(adopt(pet));
+            navigate('/');
+          }}
+        >
+          Adpot Me
+        </Button>
       </Stack>
     </Container>
   );
