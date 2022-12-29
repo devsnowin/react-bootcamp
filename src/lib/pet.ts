@@ -1,11 +1,6 @@
 import { QueryKey } from '@tanstack/react-query';
 
 const API_ENDPOINT = 'https://pets-v2.dev-apis.com';
-type SearchOptions = {
-  animal: string;
-  location: string;
-  breed: string;
-};
 
 export const fetchPet = async ({ queryKey }: { queryKey: QueryKey }) => {
   const id = queryKey[1];
@@ -17,7 +12,7 @@ export const fetchPet = async ({ queryKey }: { queryKey: QueryKey }) => {
 };
 
 export const fetchBreedList = async ({ queryKey }: { queryKey: QueryKey }) => {
-  const animal = queryKey[1];
+  const animal = queryKey[1] as Animal;
 
   if (!animal) return [];
 
@@ -29,9 +24,13 @@ export const fetchBreedList = async ({ queryKey }: { queryKey: QueryKey }) => {
 };
 
 export const searchPets = async ({ queryKey }: { queryKey: QueryKey }) => {
-  const data = queryKey[1] as unknown as SearchOptions;
+  const data = queryKey[1] as SearchOptions;
 
   const res = await fetch(
+    `${API_ENDPOINT}/pets?animal=${data.animal}&location=${data.location}&breed=${data.breed}`
+  );
+
+  console.log(
     `${API_ENDPOINT}/pets?animal=${data.animal}&location=${data.location}&breed=${data.breed}`
   );
 

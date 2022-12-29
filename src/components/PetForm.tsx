@@ -38,7 +38,13 @@ const PetForm = ({
         </FormGroup>
         <FormGroup>
           <FormLabel>Animal</FormLabel>
-          <Select value={animal} onChange={handleAnimalChange} label='Animal'>
+          <Select
+            value={animal}
+            onChange={handleAnimalChange}
+            label='Animal'
+            id='animal'
+            name='animal'
+          >
             <MenuItem value=''>
               <em>None</em>
             </MenuItem>
